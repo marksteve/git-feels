@@ -7,6 +7,7 @@ from flask import (
 )
 import requests
 from pattern.en import sentiment
+from pattern.en.wordlist import PROFANITY
 
 bp = Blueprint('pages', __name__)
 
@@ -25,16 +26,16 @@ def analyze():
   url = "https://api.github.com/repos/{}/{}/commits".format(username,repo)
   res = requests.get(url)
 
-  current_app.logger.debug(get_sentiment())
-
   # Iterate in each commit and save to array
-  messages = []
+  data = []
   for commit in res.json() :
-    messages.append(commit['commit']['message'])
+    message = commit['commit']['message']
+    profanity = any([word in PROFANITY for word in message.split()])
 
-  return jsonify(messages = messages)
+    data.append(dict(
+      message=message,
+      sentiment=sentiment(message),
+      profanity=profanity
+    ))
 
-# TODO
-def get_sentiment():
-  x = 1 + 1
-  return x
+  return jsonify(data = data)
