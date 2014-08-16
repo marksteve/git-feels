@@ -1,0 +1,19 @@
+{
+  "name": "devcup",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/marksteve/devcup.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marksteve/devcup/issues"
+  },
+  "homepage": "https://github.com/marksteve/devcup",
+  "dependencies": {
+    "react": "~0.11.1"
+  }
+}

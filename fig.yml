@@ -4,3 +4,8 @@ devcup:
     - "5000:5000"
   volumes:
     - ".:/devcup"
+
+buildjs:
+  build: buildjs
+  volumes:
+    - ".:/devcup"
