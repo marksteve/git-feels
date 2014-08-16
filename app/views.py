@@ -6,7 +6,7 @@ from flask import (
   current_app
 )
 import requests
-#from pattern.en import sentiment
+from pattern.en import sentiment
 
 bp = Blueprint('pages', __name__)
 
@@ -34,6 +34,7 @@ def analyze():
 
   return jsonify(messages = messages)
 
+# TODO
 def get_sentiment():
   x = 1 + 1
   return x
