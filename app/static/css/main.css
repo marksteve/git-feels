@@ -1,0 +1,105 @@
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+body {
+  background: #eee;
+}
+
+input, body {
+  color: #666;
+  font: 16px/1.5 Open Sans, sans-serif;
+  text-align: center;
+}
+
+form {
+  background: white;
+  padding: 3em;
+  width: 40em;
+  margin: 3em auto;
+}
+
+h1 {
+  font-size: 300%;
+  font-weight: 300;
+  display: inline-block;
+  border: 2px solid;
+  border-radius: 16px;
+  line-height: 1.5;
+  padding: 0 0.5em;
+}
+
+h2 {
+  color: #999;
+  border-bottom: 1px solid;
+  text-align: left;
+  font-size: 300%;
+  font-weight: 300;
+}
+
+input {
+  font-size: 150%;
+  line-height: 2;
+  padding: 0 1em;
+  border: 0;
+  border-bottom: 1px solid;
+  margin-bottom: 3em;
+}
+
+input:focus,
+input:active {
+  outline: none;
+}
+
+.sentiments {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.sentiment {
+  position: relative;
+  padding-left: 5em;
+  margin-bottom: 1.5em;
+  height: 4em;
+}
+
+.sentiment img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  width: 4em;
+  height: 4em;
+}
+
+.sentiment h3 {
+  font-weight: normal;
+  font-size: 150%;
+  margin: 0;
+}
+
+.sentiment ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.score {
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4rem;
+  height: 4rem;
+  line-height: 3.5rem;
+  text-align: center;
+  font-size: 150%;
+}
+
+.score.happy { color: forestgreen; border: 2px solid; }
+.score.sad { color: crimson; border: 2px solid; }
+

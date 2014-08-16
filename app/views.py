@@ -1,11 +1,11 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template
 
 bp = Blueprint('pages', __name__)
 
 
 @bp.route('/')
 def index():
-  return "Hello, world"
+  return render_template('index.html')
 
 
 @bp.route('/analyze', methods=['POST'])
