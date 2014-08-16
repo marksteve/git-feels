@@ -1,14 +1,17 @@
 /** @jsx React.DOM */
 
 var React = require('react/addons');
+var superagent = require('superagent');
 
 
 var Report = React.createClass({
   componentDidUpdate: function() {
     if (this.props.data) {
       $('> li', this.refs.sentiments.getDOMNode())
-        .velocity('transition.expandIn', {
-          stagger: 200
+        .hide()
+        .velocity('transition.bounceIn', {
+          duration: 500,
+          stagger: 100
         });
     }
   },
@@ -63,6 +66,21 @@ var App = React.createClass({
       report: {
         repo_name: 'marksteve/drake',
         sentiments: [
+          {
+            name: 'Mark Steve Samson',
+            username: 'marksteve',
+            avatar: '//lorempixel.com/64/64/people'
+          },
+          {
+            name: 'Mark Steve Samson',
+            username: 'marksteve',
+            avatar: '//lorempixel.com/64/64/people'
+          },
+          {
+            name: 'Mark Steve Samson',
+            username: 'marksteve',
+            avatar: '//lorempixel.com/64/64/people'
+          },
           {
             name: 'Mark Steve Samson',
             username: 'marksteve',
