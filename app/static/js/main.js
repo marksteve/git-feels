@@ -45,7 +45,7 @@ var App = React.createClass({
   },
   componentDidMount: function() {
     this.refs.userRepo.getDOMNode().focus();
-    $('li', this.refs.sentiments.getDOMNode())
+    $('> li', this.refs.sentiments.getDOMNode())
       .velocity('transition.expandIn', {
         stagger: 200
       });
@@ -56,7 +56,7 @@ var App = React.createClass({
     });
     return (
       <form onSubmit={this.submit}>
-        <h1>DevCup</h1>
+        <h1>git feels</h1>
         <p>
           <input
             ref="userRepo"
