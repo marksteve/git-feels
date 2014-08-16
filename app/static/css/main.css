@@ -16,6 +16,7 @@ input, body {
 
 form {
   background: white;
+  box-shadow: 0 3em 6em rgba(0, 0, 0, 0.1);
   padding: 3em;
   width: 40em;
   margin: 3em auto;
