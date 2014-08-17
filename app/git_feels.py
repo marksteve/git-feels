@@ -3,11 +3,16 @@ import requests
 from pattern.en import sentiment
 from pattern.en.wordlist import PROFANITY
 
+from cachecontrol import CacheControl
+
+cached_sess = CacheControl(requests.session())
+
+
 ACCESS_TOKEN = "a4db24a6e646ad71d1c11bbd76932eeefdbeda08"
 
 
 def get_github_list(url):
-  res = requests.get(
+  res = cached_sess.get(
     url,
     auth=(ACCESS_TOKEN, 'x-oauth-basic'),
   )
