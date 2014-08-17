@@ -5,6 +5,9 @@ from pattern.en.wordlist import PROFANITY
 
 ACCESS_TOKEN = "a4db24a6e646ad71d1c11bbd76932eeefdbeda08"
 
+# Simple cache for github requests
+cache = dict()
+
 
 def get_github_list(url):
   res = requests.get(
@@ -27,11 +30,13 @@ class GitFeels(object):
 
   @classmethod
   def from_github(cls, user, repo):
-    results = get_github_list(
-      "https://api.github.com/repos/{}/{}/commits".format(
-        user, repo
-      )
+    url = "https://api.github.com/repos/{}/{}/commits".format(
+      user, repo
     )
+    results = cache.get(url)
+    if not results:
+      results = get_github_list(url)
+      cache[url] = list(results)
     commits = {}
     for result in results:
       author = result.get('author')
@@ -65,20 +70,46 @@ class GitFeels(object):
       authors=[],
     )
     for author_commits in self.commits:
-      pos, neg = 0, 0
-      profanities = 0
-      for commit in author_commits['commits']:
+      rev_commits = reversed(author_commits['commits'])
+
+      a = dict(
+        pos=0,
+        neg=0,
+        profanities=0,
+      )
+      sentiment_series = {}
+
+      for commit in rev_commits:
+        day = arrow.get(commit['date']).ceil('day').timestamp
+        sentiment_series.setdefault(day, 0)
+
         polarity, subjectivity = sentiment(commit['message'])
-        if polarity < 0:
-          neg -= polarity
-        else:
-          pos += polarity
         # TODO: What do we do with subjectivity?
-        profanities += self.count_profanities(commit['message'])
-      report['authors'].append(dict(
-        pos=pos,
-        neg=neg,
-        profanities=profanities,
+        if polarity < 0:
+          a['neg'] -= polarity
+        else:
+          a['pos'] += polarity
+        sentiment_series[day] += polarity
+
+        profanities = self.count_profanities(
+          commit['message'],
+        )
+        a['profanities'] += profanities
+
+      sentiment_series = [
+        dict(ts=ts, polarity=polarity) for
+        (ts, polarity) in sorted(
+          sentiment_series.items(),
+          key=lambda x: x[0],
+        )
+      ]
+
+      a.update(
+        sentiment_series=sentiment_series,
         **author_commits['author']
-      ))
+      )
+
+      report['authors'].append(a)
+
     return report
+

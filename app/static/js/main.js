@@ -40,6 +40,14 @@ var Report = React.createClass({
 
 var Author = React.createClass({
   componentDidMount: function() {
+    $('.sentiment .line', this.getDOMNode())
+      .peity('line', {
+        width: 128,
+        height: 64,
+        strokeWidth: 2,
+        stroke: "#ffcc99",
+        fill: "transparent"
+      });
     $('.sentiment .pie', this.getDOMNode())
       .peity('pie', {
         diameter: 64,
@@ -48,15 +56,22 @@ var Author = React.createClass({
   },
   render: function() {
     var data = this.props.data;
-    var pie;
+    var start = new Date(data.sentiment_series[0].ts * 1000);
+    var end = new Date(data.sentiment_series[
+      data.sentiment_series.length - 1
+    ].ts * 1000);
+    var sentiLine = data.sentiment_series.map(function(sentiment) {
+      return sentiment.polarity;
+    }).join(',');
+    var sentiPie;
     if (!data.pos && !data.neg) {
-      pie = '1/2';
+      sentiPie = '1/2';
     } else if (!data.pos) {
-      pie = '1/1';
+      sentiPie = '1/1';
     } else if (!data.neg) {
-      pie = '0/1';
+      sentiPie = '0/1';
     } else {
-      pie = data.neg + '/' + (data.pos + data.neg);
+      sentiPie = data.neg + '/' + (data.pos + data.neg);
     }
     return (
       <li className="author">
@@ -67,15 +82,31 @@ var Author = React.createClass({
         <ul>
           <li>Profanities: {data.profanities}</li>
         </ul>
-        <div
-          className="sentiment"
-          title={
-            "Positive: " + data.pos.toFixed(2) + "\n" +
-            "Negative: " + data.neg.toFixed(2)
-          }
-        >
-          <span className="pie">
-            {pie}
+        <div className="sentiment">
+          <span
+            className="polarity-graph"
+            title={
+              "Polarity/day from " +
+              start.toLocaleDateString() +
+              " to " +
+              end.toLocaleDateString()
+            }
+          >
+            <span className="line">
+              {sentiLine}
+            </span>
+          </span>
+          <span
+            title={
+              "Positive: " + data.pos.toFixed(2) + "\n" +
+              "Negative: " + data.neg.toFixed(2)
+            }
+          >
+            <span
+              className="pie"
+            >
+              {sentiPie}
+            </span>
           </span>
         </div>
       </li>
