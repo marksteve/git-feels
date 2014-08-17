@@ -11,6 +11,13 @@ cached_sess = CacheControl(requests.session())
 ACCESS_TOKEN = "a4db24a6e646ad71d1c11bbd76932eeefdbeda08"
 
 
+def truncate(s, n, suffix="..."):
+  if len(s) > n - len(suffix):
+    return s[:n] + suffix
+  else:
+    return s
+
+
 def get_github_list(url):
   res = cached_sess.get(
     url,
@@ -109,11 +116,17 @@ class GitFeels(object):
       ]
 
       if pos_messages:
-        pos_message = max(pos_messages, key=lambda m: m[0])[1]
+        pos_message = truncate(
+          max(pos_messages, key=lambda m: m[0])[1],
+          80,
+        )
       else:
         pos_message = None
       if neg_messages:
-        neg_message = max(neg_messages, key=lambda m: m[0])[1]
+        neg_message = truncate(
+          max(neg_messages, key=lambda m: m[0])[1],
+          80,
+        )
       else:
         neg_message = None
 
