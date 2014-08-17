@@ -56,8 +56,7 @@ input:active {
 
 .authors {
   list-style: none;
-  padding: 3em 0;
-  margin: 0 3em;
+  padding: 3em;
   text-align: left;
 }
 
@@ -70,6 +69,7 @@ input:active {
   transition: height ease-in-out 200ms;
   -moz-transition: height ease-in-out 200ms;
   -webkit-transition: height ease-in-out 200ms;
+  background: white;
 }
 
 .author:hover {
