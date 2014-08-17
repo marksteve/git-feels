@@ -17,7 +17,6 @@ input, body {
 form {
   background: white;
   box-shadow: 0 3em 6em rgba(0, 0, 0, 0.1);
-  padding: 3em;
   width: 40em;
   margin: 3em auto;
 }
@@ -37,6 +36,7 @@ h2 {
   border-bottom: 1px solid;
   text-align: left;
   font-size: 250%;
+  margin: 0 3rem;
   font-weight: 300;
 }
 
@@ -56,8 +56,8 @@ input:active {
 
 .authors {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding: 3em 0;
+  margin: 0 3em;
   text-align: left;
 }
 
