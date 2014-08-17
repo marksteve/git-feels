@@ -46,7 +46,7 @@ var Author = React.createClass({
         height: 64,
         strokeWidth: 2,
         stroke: "#ffcc99",
-        fill: "transparent"
+        fill: "#ffeeaa"
       });
     $('.sentiment .pie', this.getDOMNode())
       .peity('pie', {
