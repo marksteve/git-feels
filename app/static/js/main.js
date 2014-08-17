@@ -103,6 +103,7 @@ var App = React.createClass({
       this.setState({
         title: ':('
       });
+      return;
     }
     this.setState({
       title: 'git feels',
