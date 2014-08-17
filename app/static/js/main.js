@@ -43,7 +43,7 @@ var Author = React.createClass({
     $('.sentiment .pie', this.getDOMNode())
       .peity('pie', {
         diameter: 64,
-        fill: ["#ffcccc", "#ccffaa"]
+        fill: ["#ccffaa", "#ffcccc"]
       });
   },
   render: function() {
@@ -52,9 +52,9 @@ var Author = React.createClass({
     if (!data.pos && !data.neg) {
       pie = '1/2';
     } else if (!data.pos) {
-      pie = '1/1';
-    } else if (!data.neg) {
       pie = '0/1';
+    } else if (!data.neg) {
+      pie = '1/1';
     } else {
       pie = data.pos + '/' + (data.pos + data.neg);
     }
