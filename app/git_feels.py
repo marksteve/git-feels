@@ -70,16 +70,15 @@ class GitFeels(object):
       authors=[],
     )
     for author_commits in self.commits:
-      rev_commits = reversed(author_commits['commits'])
-
       a = dict(
         pos=0,
         neg=0,
         profanities=0,
+        commits_count=len(author_commits['commits']),
       )
       sentiment_series = {}
 
-      for commit in rev_commits:
+      for commit in reversed(author_commits['commits']):
         day = arrow.get(commit['date']).ceil('day').timestamp
         sentiment_series.setdefault(day, 0)
 
@@ -110,6 +109,10 @@ class GitFeels(object):
       )
 
       report['authors'].append(a)
+
+    report['authors'].sort(
+      key=lambda a: -a["commits_count"]
+    )
 
     return report
 
