@@ -80,7 +80,20 @@ var Author = React.createClass({
           {data.name || data.login}
         </h3>
         <ul>
-          <li>Profanities: {data.profanities}</li>
+          <li>
+            <strong>Most positive message</strong>
+            <br />
+            {data.pos_message || "n/a"}
+          </li>
+          <li>
+            <strong>Most negative message</strong>
+            <br />
+            {data.neg_message || "n/a"}
+            </li>
+          <li>
+            <strong>Profanities</strong>
+            : {data.profanities}
+          </li>
         </ul>
         <div className="sentiment">
           <span
