@@ -5,9 +5,6 @@ from pattern.en.wordlist import PROFANITY
 
 ACCESS_TOKEN = "a4db24a6e646ad71d1c11bbd76932eeefdbeda08"
 
-# Simple cache for github requests
-cache = dict()
-
 
 def get_github_list(url):
   res = requests.get(
@@ -30,14 +27,12 @@ class GitFeels(object):
 
   @classmethod
   def from_github(cls, user, repo):
-    url = "https://api.github.com/repos/{}/{}/commits".format(
-      user, repo
-    )
-    results = cache.get(url)
-    if not results:
-      results = get_github_list(url)
-      cache[url] = list(results)
     commits = {}
+    results = get_github_list(
+      "https://api.github.com/repos/{}/{}/commits".format(
+        user, repo
+      ),
+    )
     for result in results:
       author = result.get('author')
       if not author:
