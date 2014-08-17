@@ -43,7 +43,7 @@ var Author = React.createClass({
     $('.sentiment .pie', this.getDOMNode())
       .peity('pie', {
         diameter: 64,
-        fill: ["#ccffaa", "#ffcccc"]
+        fill: ["#ffcccc", "#ccffaa"]
       });
   },
   render: function() {
@@ -52,11 +52,11 @@ var Author = React.createClass({
     if (!data.pos && !data.neg) {
       pie = '1/2';
     } else if (!data.pos) {
-      pie = '0/1';
-    } else if (!data.neg) {
       pie = '1/1';
+    } else if (!data.neg) {
+      pie = '0/1';
     } else {
-      pie = data.pos + '/' + (data.pos + data.neg);
+      pie = data.neg + '/' + (data.pos + data.neg);
     }
     return (
       <li className="author">
@@ -118,15 +118,23 @@ var App = React.createClass({
   componentDidMount: function() {
     this.refs.userRepo.getDOMNode().focus();
   },
+  componentDidUpdate: function(prevProps, prevState) {
+    if (this.state.title != prevState.title) {
+      $(this.refs.title.getDOMNode())
+        .velocity('callout.pulse', {
+          duration: 1000
+        });
+    }
+  },
   render: function() {
     return (
       <form onSubmit={this.submit}>
-        <h1>{this.state.title}</h1>
+        <h1 ref="title">{this.state.title}</h1>
         <p>
           <input
             ref="userRepo"
             type="text"
-            placeholder="marksteve/drake"
+            placeholder="holman/boom"
           />
         </p>
         <Report data={this.state.report} />
@@ -138,5 +146,5 @@ var App = React.createClass({
 
 React.renderComponent(
   <App />,
-  document.body
+  document.querySelector('#devcup')
 );
