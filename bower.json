@@ -12,6 +12,7 @@
   "dependencies": {
     "jquery": "~2.1.1",
     "normalize.css": "~3.0.1",
-    "velocity": "~0.11.5"
+    "velocity": "~0.11.5",
+    "peity": "~2.0.3"
   }
 }

@@ -7,7 +7,7 @@ var superagent = require('superagent');
 var Report = React.createClass({
   componentDidUpdate: function() {
     if (this.props.data) {
-      $('> li', this.refs.sentiments.getDOMNode())
+      $('> li', this.refs.authors.getDOMNode())
         .hide()
         .velocity('transition.bounceIn', {
           duration: 500,
@@ -20,17 +20,17 @@ var Report = React.createClass({
     if (!data) {
       return null;
     }
-    var sentiments = data.sentiments.map(function(data, i) {
-      return <Sentiment key={i} data={data} />;
+    var authors = data.authors.map(function(data) {
+      return <Author key={data.id} data={data} />;
     });
     return (
       <div className="report">
         <h2>{data.repo_name}</h2>
         <ul
-          ref="sentiments"
-          className="sentiments"
+          ref="authors"
+          className="authors"
         >
-          {sentiments}
+          {authors}
         </ul>
       </div>
     );
@@ -38,20 +38,45 @@ var Report = React.createClass({
 });
 
 
-var Sentiment = React.createClass({
+var Author = React.createClass({
+  componentDidMount: function() {
+    $('.sentiment .pie', this.getDOMNode())
+      .peity('pie', {
+        diameter: 64,
+        fill: ["#ffcccc", "#ccffaa"]
+      });
+  },
   render: function() {
     var data = this.props.data;
+    var pie;
+    if (!data.pos && !data.neg) {
+      pie = '1/2';
+    } else if (!data.pos) {
+      pie = '1/1';
+    } else if (!data.neg) {
+      pie = '0/1';
+    } else {
+      pie = data.pos + '/' + (data.pos + data.neg);
+    }
     return (
-      <li className="sentiment">
-        <img src={data.avatar} />
+      <li className="author">
+        <img src={data.avatar_url} />
         <h3>
-          {data.name}
+          {data.name || data.login}
         </h3>
         <ul>
-          <li>{data.username}</li>
+          <li>Profanities: {data.profanities}</li>
         </ul>
-        <div className="happy score">
-          +20
+        <div
+          className="sentiment"
+          title={
+            "Positive: " + data.pos.toFixed(2) + "\n" +
+            "Negative: " + data.neg.toFixed(2)
+          }
+        >
+          <span className="pie">
+            {pie}
+          </span>
         </div>
       </li>
     );
@@ -62,41 +87,31 @@ var Sentiment = React.createClass({
 var App = React.createClass({
   submit: function(e) {
     e.preventDefault();
+    superagent
+      .post('/analyze')
+      .send({
+        user_repo: this.refs.userRepo.getDOMNode().value
+      })
+      .end(this.setReport);
     this.setState({
-      report: {
-        repo_name: 'marksteve/drake',
-        sentiments: [
-          {
-            name: 'Mark Steve Samson',
-            username: 'marksteve',
-            avatar: '//lorempixel.com/64/64/people'
-          },
-          {
-            name: 'Mark Steve Samson',
-            username: 'marksteve',
-            avatar: '//lorempixel.com/64/64/people'
-          },
-          {
-            name: 'Mark Steve Samson',
-            username: 'marksteve',
-            avatar: '//lorempixel.com/64/64/people'
-          },
-          {
-            name: 'Mark Steve Samson',
-            username: 'marksteve',
-            avatar: '//lorempixel.com/64/64/people'
-          },
-          {
-            name: 'Mark Steve Samson',
-            username: 'marksteve',
-            avatar: '//lorempixel.com/64/64/people'
-          }
-        ]
-      }
+      title: 'gitting feels...',
+      report: null
+    });
+  },
+  setReport: function(res) {
+    if (res.error) {
+      this.setState({
+        title: ':('
+      });
+    }
+    this.setState({
+      title: 'git feels',
+      report: res.body.report
     });
   },
   getInitialState: function() {
     return {
+      title: 'git feels',
       report: null
     };
   },
@@ -106,7 +121,7 @@ var App = React.createClass({
   render: function() {
     return (
       <form onSubmit={this.submit}>
-        <h1>git feels</h1>
+        <h1>{this.state.title}</h1>
         <p>
           <input
             ref="userRepo"
