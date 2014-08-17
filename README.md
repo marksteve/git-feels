@@ -1,7 +1,13 @@
-# DevCup
+# git feels
 
-* Sentiment Analysis: https://github.com/clips/pattern
-* Spellcheck: http://textblob.readthedocs.org/
+Analyzes commit messages to determine contributor "mood"
+
+## Analysis
+
+Sentiment analysis only uses `package.en` from
+[clips/pattern](https://github.com/clips/pattern)
+for now so results will most probably be unsatisfying.
+We plan on adding better classifiers in the future.
 
 ## Team Song
 
