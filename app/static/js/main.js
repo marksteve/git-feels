@@ -150,7 +150,7 @@ var App = React.createClass({
       return;
     }
     this.setState({
-      title: 'git feels',
+      title: 'git git aw!',
       report: res.body.report
     });
   },
