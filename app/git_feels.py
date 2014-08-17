@@ -78,6 +78,9 @@ class GitFeels(object):
       )
       sentiment_series = {}
 
+      pos_messages = []
+      neg_messages = []
+
       for commit in reversed(author_commits['commits']):
         day = arrow.get(commit['date']).ceil('day').timestamp
         sentiment_series.setdefault(day, 0)
@@ -86,8 +89,10 @@ class GitFeels(object):
         # TODO: What do we do with subjectivity?
         if polarity < 0:
           a['neg'] -= polarity
+          pos_messages.append((polarity, commit['message']))
         else:
           a['pos'] += polarity
+          neg_messages.append((-polarity, commit['message']))
         sentiment_series[day] += polarity
 
         profanities = self.count_profanities(
@@ -103,8 +108,19 @@ class GitFeels(object):
         )
       ]
 
+      if pos_messages:
+        pos_message = max(pos_messages, key=lambda m: m[0])[1]
+      else:
+        pos_message = None
+      if neg_messages:
+        neg_message = max(neg_messages, key=lambda m: m[0])[1]
+      else:
+        neg_message = None
+
       a.update(
         sentiment_series=sentiment_series,
+        pos_message=pos_message,
+        neg_message=neg_message,
         **author_commits['author']
       )
 
